@@ -33,6 +33,10 @@ public class Word {
             inverseJoinColumns = @JoinColumn(name = "CATEGORY_ID_FK"))
     private List<Category> categories;
 
+    @OneToMany(mappedBy = "word", cascade = CascadeType.ALL,
+    fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<StageWord> stageWords;
+
 
     @Override
     public String toString() {
