@@ -25,6 +25,18 @@ public class AppUser {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private GameProgress gameProgress;
+
+    public String toString() {
+        return "AppUser{" +
+                "id='" + id + '\'' +
+                ", userName='" + userName + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", totalScore=" + totalScore +
+                ", isActive=" + isActive +
+                '}';
+    }
 }
 
 
