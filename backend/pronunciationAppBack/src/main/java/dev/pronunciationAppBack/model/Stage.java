@@ -28,4 +28,16 @@ public class Stage {
     @OneToMany(mappedBy = "stage", cascade = CascadeType.ALL,
     fetch = FetchType.EAGER, orphanRemoval = true)
     private List<StageWord> stageWords;
+
+    @Override
+    public String toString() {
+        return "Stage{" +
+                "id='" + id + '\'' +
+                ", stageName='" + stageName + '\'' +
+                ", avatarURl='" + avatarURl + '\'' +
+                ", status='" + status + '\'' +
+                ", progress=" + progress +
+                ", currentScore=" + currentScore +
+                '}';
+    }
 }

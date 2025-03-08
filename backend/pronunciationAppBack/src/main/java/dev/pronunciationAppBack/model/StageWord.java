@@ -13,8 +13,6 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public class StageWord {
 
     @Id
@@ -36,4 +34,26 @@ public class StageWord {
     public enum Status {
         DONE, PENDING, FAIL
     }
+
+    public StageWord (String id, Status status ,int listenedQty, Date lastUpdatedDateTime, Word word, Stage stage) {
+        this.id = id;
+        this.status = status;
+        this.listenedQty = listenedQty;
+        this.lastUpdatedDateTime = lastUpdatedDateTime;
+        this.word = word;
+        this.stage = stage;
+    }
+
+    @Override
+    public String toString() {
+        return "StageWord{" +
+                "id='" + id + '\'' +
+                ", status=" + status +
+                ", listenedQty=" + listenedQty +
+                ", lastUpdatedDateTime=" + lastUpdatedDateTime +
+                ", word=" + word +
+                ", stage=" + stage +
+                '}';
+    }
+
 }

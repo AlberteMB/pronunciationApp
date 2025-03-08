@@ -30,6 +30,18 @@ public class Pronunciation {
     @JoinColumn(name = "WORD_ID_FK")
     private Word word;
 
-
-
+    @Override
+    public String toString() {
+        return "Pronunciation{" +
+                "id='" + id + '\'' +
+                ", audioDescription='" + audioDescription + '\'' +
+                ", audioDuration=" + audioDuration +
+                ", audioSize=" + audioSize +
+                ", audioUrl='" + audioUrl + '\'' +
+                ", definition='" + definition + '\'' +
+                ", phoneticSpelling='" + phoneticSpelling + '\'' +
+                ", speakerGender='" + speakerGender + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

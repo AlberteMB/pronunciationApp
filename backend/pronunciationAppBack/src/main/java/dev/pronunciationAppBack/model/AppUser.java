@@ -26,6 +26,7 @@ public class AppUser {
     @OneToOne(mappedBy = "appUser", cascade = CascadeType.ALL)
     private GameProgress gameProgress;
 
+
     public AppUser(String id, String userName, int age, String email, String password, int totalScore, boolean isActive) {
         this.id = id;
         this.userName = userName;
@@ -38,7 +39,7 @@ public class AppUser {
             this.gameProgress = new GameProgress();
     }
     }
-
+    @Override
     public String toString() {
         return "AppUser{" +
                 "id='" + id + '\'' +

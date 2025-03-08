@@ -1,9 +1,6 @@
 package dev.pronunciationAppBack;
 
-import dev.pronunciationAppBack.model.AppUser;
-import dev.pronunciationAppBack.model.Category;
-import dev.pronunciationAppBack.model.GameProgress;
-import dev.pronunciationAppBack.model.Word;
+import dev.pronunciationAppBack.model.*;
 import dev.pronunciationAppBack.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +82,20 @@ public class RelationshipTest {
         // Checking the relationships
         assertEquals(1, savedCategory.getWords().size(), "Category must have one word");
         assertEquals("Example", savedCategory.getWords().get(0).getWordName(), "The name of the word must be 'Example'");
+    }
+
+    @Test
+     public void WordStageTest(){
+
+        Word word = new Word("W001", "Example", "A thing characteristic of its kind", "ɪɡˈzæmpəl", "This is an example sentence.", true, 1);
+        Word savedWord = wordRepository.save(word);
+
+        StageWord stageWord = new StageWord("SW001", StageWord.Status.DONE, 1, new java.util.Date(), savedWord, null);
+        StageWord savedStageWord = stageWordRepository.save(stageWord);
+
+        savedWord.getStageWords().add(savedStageWord);
+        savedStageWord.setWord(savedWord);
+
     }
 
 

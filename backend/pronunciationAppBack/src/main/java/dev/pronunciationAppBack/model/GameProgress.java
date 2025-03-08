@@ -45,5 +45,16 @@ public class GameProgress {
     @JoinColumn(name = "user_id")
     private AppUser appUser;
 
+    @Override
+    public String toString() {
+        return "GameProgress{" +
+                "id='" + id + '\'' +
+                ", currentScore=" + currentScore +
+                ", currentStage=" + currentStage +
+                ", lastPlayedDate=" + lastPlayedDate +
+                ", wordsLearned=" + wordsLearned +
+                '}';
+    }
+
 
 }

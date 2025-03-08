@@ -37,7 +37,7 @@ public class Category {
         this.words = new ArrayList<>();
     }
 
-
+    @Override
     public String toString() {
         return "Category{" +
                 "id='" + id + '\'' +
