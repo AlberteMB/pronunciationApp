@@ -5,7 +5,10 @@ import dev.pronunciationAppBack.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
+import java.util.Date;
+
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,11 +32,15 @@ public class RelationshipTest {
     @Test
     public void UserAppGameProgressTest() {
         // Creating and saving AppUser
-        AppUser appUser = new AppUser("U001", "Juan", 20, "8lX5i@example.com", "password", 0, true);
+        AppUser appUser = new AppUser("U001", "Juan", 20, "8lX5i@example.com",
+                "password", 0, true);
+
         AppUser savedAppUser = appUserRepository.save(appUser);
 
         // Creating and saving GameProgress
-        GameProgress gameProgress = new GameProgress("GP001", 0, GameProgress.Stage.STAGE_01, new java.util.Date(), 0, savedAppUser);
+        GameProgress gameProgress = new GameProgress("GP001", 0, GameProgress.Stage.STAGE_01,
+                new java.util.Date(), 0, savedAppUser);
+
         GameProgress savedGameProgress = gameProgressRepository.save(gameProgress);
 
         // Saving the relationship
@@ -56,11 +63,15 @@ public class RelationshipTest {
     @Test
     public void WordCategoryTest() {
         // Create and save Word
-        Word word = new Word("W001", "Example", "A thing characteristic of its kind", "ɪɡˈzæmpəl", "This is an example sentence.", true, 1);
+        Word word = new Word("W001", "Example", "A thing characteristic of its kind",
+                "ɪɡˈzæmpəl", "This is an example sentence.", true, 1);
+
         Word savedWord = wordRepository.save(word);
 
         // Create and save Category
-        Category category = new Category("C001", "Nouns", "Words that represent people, places, things, or ideas", "Words that represent entities", 1);
+        Category category = new Category("C001", "Nouns", "Words that represent people, places, things, or ideas",
+                "Words that represent entities", 1);
+
         Category savedCategory = categoryRepository.save(category);
 
         // Save the relationship
@@ -85,17 +96,40 @@ public class RelationshipTest {
     }
 
     @Test
-     public void WordStageTest(){
-
-        Word word = new Word("W001", "Example", "A thing characteristic of its kind", "ɪɡˈzæmpəl", "This is an example sentence.", true, 1);
+    public void testWordStageRelationship() {
+        // Create and save Word
+        Word word = new Word("W001", "Example", "A thing characteristic of its kind",
+                "ɪɡˈzæmpəl", "This is an example sentence.", true, 1);
         Word savedWord = wordRepository.save(word);
 
-        StageWord stageWord = new StageWord("SW001", StageWord.Status.DONE, 1, new java.util.Date(), savedWord, null);
+        // Create and save Stage
+        Stage stage = new Stage("S001", "Stage 1", "Avatar URL", "Status", 0, 0);
+        Stage savedStage = stageRepository.save(stage);
+
+        // Create and save StageWord
+        StageWord stageWord = new StageWord("SW001", StageWord.Status.DONE, 1, new Date(), savedWord, savedStage);
         StageWord savedStageWord = stageWordRepository.save(stageWord);
 
+        // Word and Stage relationship
         savedWord.getStageWords().add(savedStageWord);
-        savedStageWord.setWord(savedWord);
+        savedStage.getStageWords().add(savedStageWord);
 
+        wordRepository.save(savedWord);
+        stageRepository.save(savedStage);
+
+        // Checking the relationships
+        Optional<Word> retrievedWord = wordRepository.findById(savedWord.getId());
+        assertTrue(retrievedWord.isPresent());
+        assertEquals(1, retrievedWord.get().getStageWords().size());
+
+        Optional<Stage> retrievedStage = stageRepository.findById(savedStage.getId());
+        assertTrue(retrievedStage.isPresent());
+        assertEquals(1, retrievedStage.get().getStageWords().size());
+
+        Optional<StageWord> retrievedStageWord = stageWordRepository.findById(savedStageWord.getId());
+        assertTrue(retrievedStageWord.isPresent());
+        assertEquals(savedWord.getId(), retrievedStageWord.get().getWord().getId());
+        assertEquals(savedStage.getId(), retrievedStageWord.get().getStage().getId());
     }
 
 

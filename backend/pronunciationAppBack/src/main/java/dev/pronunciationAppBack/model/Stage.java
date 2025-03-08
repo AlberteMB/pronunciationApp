@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -28,6 +29,16 @@ public class Stage {
     @OneToMany(mappedBy = "stage", cascade = CascadeType.ALL,
     fetch = FetchType.EAGER, orphanRemoval = true)
     private List<StageWord> stageWords;
+
+    public Stage (String id, String stageName, String avatarURl, String status, int progress, int currentScore) {
+        this.id = id;
+        this.stageName = stageName;
+        this.avatarURl = avatarURl;
+        this.status = status;
+        this.progress = progress;
+        this.currentScore = currentScore;
+        this.stageWords = new ArrayList<>();
+    }
 
     @Override
     public String toString() {
