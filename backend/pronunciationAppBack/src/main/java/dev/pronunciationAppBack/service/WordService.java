@@ -3,7 +3,10 @@ package dev.pronunciationAppBack.service;
 import dev.pronunciationAppBack.model.Word;
 import dev.pronunciationAppBack.repository.WordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
+//import java.awt.print.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,10 +16,6 @@ public class WordService {
 
     @Autowired
     private WordRepository wordRepository;
-
-    public List<Word> getAllWords() {
-        return wordRepository.findAll();
-    }
 
     public Optional<Word> getWordById(String id) {
         return Optional.ofNullable(wordRepository.getWordById(id));
@@ -50,4 +49,16 @@ public class WordService {
     public Word getWordByPhoneticSpelling(String pronunciation) {
         return wordRepository.getWordByPhoneticSpelling(pronunciation);
     }
+
+    // Pagination
+    // All words
+    public Page<Word> getAllWords(Pageable pageable) {
+        return wordRepository.findAll(pageable);
+    }
+    // All words by order ascending
+    public Page<Word> getAllWordsByOrderByWordNameAsc(Pageable pageable) {
+        return wordRepository.findAllByOrderByWordNameAsc(pageable); }
+    // All words by order descending
+    public Page<Word> getAllWordsByOrderByWordNameDesc(Pageable pageable) {
+        return wordRepository.findAllByOrderByWordNameDesc(pageable); }
 }

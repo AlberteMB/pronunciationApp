@@ -3,10 +3,14 @@ package dev.pronunciationAppBack.controller;
 import dev.pronunciationAppBack.model.Word;
 import dev.pronunciationAppBack.service.WordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 import java.util.Date;
 import java.util.List;
@@ -20,13 +24,25 @@ public class WordController {
     private WordService wordService;
 
     @GetMapping
-    public ResponseEntity<List<Word>> getAllWords() {
-        List<Word> words = wordService.getAllWords();
+    public ResponseEntity<?> getWords(@PageableDefault(size = 10, sort = "wordName") Pageable pageable) {
         HttpHeaders headers = getCommonHeaders("Get all words");
 
-        return !words.isEmpty()
-                ? new ResponseEntity<>(words, headers, HttpStatus.OK)
+        Page<Word> wordsPage = wordService.getAllWords(pageable);
+
+        return wordsPage.hasContent()
+                ? new ResponseEntity<>(wordsPage, headers, HttpStatus.OK)
                 : new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/asc")
+    public Page<Word> getAllWordsByOrderByWordNameAsc(@PageableDefault(size = 10, sort = "wordName")Pageable pageable) {
+        HttpHeaders headers = getCommonHeaders("Get words sorted ASC");
+        return wordService.getAllWordsByOrderByWordNameAsc(pageable);
+    }
+    @GetMapping("/desc")
+    public Page<Word> getAllWordsByOrderByWordNameDesc(@PageableDefault(size = 10, sort = "wordName")Pageable pageable) {
+        HttpHeaders headers = getCommonHeaders("Get words sorted DESC");
+        return wordService.getAllWordsByOrderByWordNameDesc(pageable);
     }
 
     @GetMapping("/{id}")
