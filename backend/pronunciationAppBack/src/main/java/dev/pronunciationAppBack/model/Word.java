@@ -5,8 +5,13 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 @Data
 @NoArgsConstructor
@@ -37,6 +42,24 @@ public class Word {
     @OneToMany(mappedBy = "word", cascade = CascadeType.ALL,
     fetch = FetchType.EAGER, orphanRemoval = true)
     private List<StageWord> stageWords;
+
+
+    // Auditory fields
+    @CreatedDate
+    @Column(name = "CreatedDate", nullable = false, updatable = false)
+    private Date createdDate = new Date();
+
+    @LastModifiedDate
+    @Column(name = "LastModifiedDate")
+    private Date lastModifiedDate;
+
+    @CreatedBy
+    @Column(name = "CreatedBy")
+    private String createdBy;
+
+    @LastModifiedBy
+    @Column(name = "LastModifiedBy")
+    private String lastModifiedBy;
 
     public Word(String id, String wordName, String definition, String phoneticSpelling, String sentence, boolean isActive, int  level) {
         this.id = id;

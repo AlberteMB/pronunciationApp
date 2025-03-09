@@ -10,6 +10,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.util.Date;
 
 @Entity
 @Data
@@ -39,6 +44,15 @@ public class AppUser {
 
     @OneToOne(mappedBy = "appUser", cascade = CascadeType.ALL)
     private GameProgress gameProgress;
+
+    // Auditory fields
+    @CreatedDate
+    @Column(name = "CreatedDate", nullable = false, updatable = false)
+    private Date createdDate = new Date();
+
+    @LastModifiedDate
+    @Column(name = "LastModifiedDate")
+    private Date lastModifiedDate;
 
 
     public AppUser(String id, String userName, int age, String email, String password, int totalScore, boolean isActive) {
